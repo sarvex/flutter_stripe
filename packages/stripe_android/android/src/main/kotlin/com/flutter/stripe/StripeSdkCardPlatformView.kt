@@ -40,6 +40,12 @@ class StripeSdkCardPlatformView(
         if (creationParams?.containsKey("postalCodeEnabled") == true) {
             stripeSdkCardViewManager.setPostalCodeEnabled(cardView, creationParams["postalCodeEnabled"] as Boolean)
         }
+        if (creationParams?.containsKey("dangerouslyGetFullCardDetails") == true) {
+            stripeSdkCardViewManager.setDangerouslyGetFullCardDetails(cardView, creationParams["dangerouslyGetFullCardDetails"] as Boolean)
+        }
+        if (creationParams?.containsKey("autofocus") == true) {
+            stripeSdkCardViewManager.setAutofocus(cardView, creationParams["autofocus"] as Boolean)
+        }
         // Temporal fix to https://github.com/flutter/flutter/issues/81029
         val binding = CardInputWidgetBinding.bind(cardView.mCardWidget)
         binding.cardNumberEditText.inputType = InputType.TYPE_CLASS_TEXT
@@ -72,7 +78,17 @@ class StripeSdkCardPlatformView(
             }
             "onPostalCodeEnabledChanged" -> {
                 val arguments = ReadableMap(call.arguments as Map<String, Any>)
-                stripeSdkCardViewManager.setPostalCodeEnabled(cardView, arguments.getBoolean("postalCodeEnabled") as Boolean)
+                stripeSdkCardViewManager.setPostalCodeEnabled(cardView, arguments.getBoolean("postalCodeEnabled"))
+                result.success(null)
+            }
+            "dangerouslyGetFullCardDetails" -> {
+                val arguments = ReadableMap(call.arguments as Map<String, Any>)
+                stripeSdkCardViewManager.setDangerouslyGetFullCardDetails(cardView, arguments.getBoolean("dangerouslyGetFullCardDetails"))
+                result.success(null)
+            }
+            "autofocus" -> {
+                val arguments = ReadableMap(call.arguments as Map<String, Any>)
+                stripeSdkCardViewManager.setAutofocus(cardView, arguments.getBoolean("autofocus"))
                 result.success(null)
             }
             "requestFocus" -> {
